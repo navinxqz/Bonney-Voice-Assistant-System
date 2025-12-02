@@ -24,11 +24,11 @@ and many more to come in near future...
 ## How to run?
 1. Create a virtual env
 ```bash
-conda create --prefix .\bonny python=3.11 -y
+conda create --prefix .\bonney python=3.11 -y
 ```
 2. Activate virtual env
 ```bash
-conda activate .\bonny
+conda activate .\bonney
 ```
 3. Install required packages
 ```bash
