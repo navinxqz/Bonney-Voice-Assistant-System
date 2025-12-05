@@ -78,6 +78,23 @@ def greeting():
         speak("Good Evening boss! How was your day?")
     # speak("I am Bonney. How may I assist you today?")
 
+#play music
+def playMusic():
+    music_dir = "./music"
+    try:
+        songs = os.listdir(music_dir)
+        if songs:
+            song = random.choice(songs)
+            speak(f"Playing {song} from your music library.")
+            os.startfile(os.path.join(music_dir, song))
+            logging.info(f"Playing music: {song}")
+        else:
+            speak("Your music directory is empty.")
+            logging.info("Music directory is empty.")
+    except Exception as e:
+        speak("Sorry boss, couldn't access your music directory.")
+        logging.error(f"Error accessing music directory: {e}")
+
 greeting()
 while True:
     q= takeCommand().lower() 
@@ -87,12 +104,12 @@ while True:
         speak("Hello! My name is Bonney. I am your voice assistant.")
         logging.info("Provided name information.")
     
-    elif "how are you" in q:
-        speak("I'm doin great boss. Hope you are doin well too!")
+    elif "how are you" in q or "what about you" in q:
+        speak("All systems operational boss")
         logging.info("Responded to 'how are you' query.")
 
     elif "who made you" in q:
-        speak("Obviously you...........dummy")
+        speak("According to all records—and my own source code—you did, boss")
 
     elif "time" in q:
         strTime= datetime.datetime.now().strftime("%H:%M:%S")
@@ -109,6 +126,10 @@ while True:
         speak("Boss here's the Notepad")
         subprocess.Popen("notepad.exe")
         logging.info("Opened Notepad application.")
+    
+    #play music
+    elif "play music" in q:
+        playMusic()
 
     #open facebook
     elif "facebook" in q:
@@ -134,8 +155,9 @@ while True:
     #open versity portal
     elif "university portal" in q:
         speak("Boss here's your University Portal")
-        webbrowser.open("https://portal.aiub.edu/Login?ReturnUrl=%2fStudent%2fHome%2fIndex%2f5")
+        webbrowser.open("https://portal.aiub.edu/")
         logging.info("Opened University Portal website.")
+
     #open wikipedia
     elif "who is" in q or "what is" in q:
         speak("Searching Wikipedia...")
