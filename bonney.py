@@ -1,5 +1,6 @@
 from email.mime import audio
 import speech_recognition as sr
+import google.generativeai as genai
 import pyttsx3
 import logging
 import os
@@ -32,6 +33,16 @@ wiki = wikipediaapi.Wikipedia(
     language='en',
     user_agent='BonneyAssistant'
 )
+
+def geminiModel(query):
+    GEMINI_API_KEY = "AIzaSyBt-qtgPReavUmJpbUKuOe6t3Q8d5MTS20"
+    genai.configure(api_key=GEMINI_API_KEY)
+    model=genai.GenerativeModel("gemini-2.5-flash")
+    prompt=f"Your name is Bonney. Act like JARVIS (voice assistant of IRON MAN). Answer the following question in a concise manner: {query}"
+    response=model.generate_content(prompt)
+    result = response.text
+    return result
+
 def wiki_summary(query):
     page = wiki.page(query)
     if page.exists():
@@ -48,7 +59,6 @@ def speak(text):
     """
     engine.say(text)
     engine.runAndWait()    
-# speak("Initializing Bonney. Listening for your command...")
 
 #recognize the speech & convert it to text
 def takeCommand():
@@ -178,4 +188,6 @@ while True:
         # break
         exit()
     else:
-        speak("I am sorry, I didn't understand that command.")
+        response = geminiModel(q)
+        speak(response)
+        logging.info(f"Responded using Gemini model for query: {q}")   
